@@ -25,9 +25,30 @@ namespace PetStoreMvc.Models
         {
         }
 
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.SubCategories)
+                .WithOptional()
+                .HasForeignKey(c => c.CategoryId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<SubCategory>()
+                .HasMany(c => c.Products)
+                .WithOptional()
+                .HasForeignKey(p => p.SubCategoryId)
+                .WillCascadeOnDelete(true);
         }
     }
 }
