@@ -17,6 +17,6 @@ namespace PetStoreMvc.Models
         public decimal Price { get; set; }
         public Guid SubCategoryId { get; set; }
         [ForeignKey("SubCategoryId")]
-        public SubCategory SubCategory { get; set; }
+        public virtual SubCategory SubCategory { get; set; }
     }
 }
