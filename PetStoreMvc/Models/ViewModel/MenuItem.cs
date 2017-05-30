@@ -20,8 +20,10 @@ namespace PetStoreMvc.Models.ViewModel
                 if (value != null)
                 {
                     _category = value;
-                    RouteValueDictionary = new RouteValueDictionary();
-                    RouteValueDictionary.Add("CategoryId", value.Id);
+                    RouteValueDictionary = new RouteValueDictionary
+                    {
+                        { "CategoryId", value.Id }
+                    };
                 }
             }
         }

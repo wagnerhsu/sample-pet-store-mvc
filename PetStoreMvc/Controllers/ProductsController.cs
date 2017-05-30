@@ -22,9 +22,11 @@ namespace PetStoreMvc.Controllers
             if (CategoryId.HasValue)
             {
                 list = _repository.List().Where(p => p.SubCategory.CategoryId == CategoryId);
+                ViewBag.CategoryId = CategoryId;
             }
             else
             {
+                ViewBag.CategoryId = null;
                 list = _repository.List();
             }
             return View(list);
@@ -41,9 +43,19 @@ namespace PetStoreMvc.Controllers
             return HttpNotFound();
         }
 
-        public ActionResult Create()
+        public ActionResult Create(Guid? CategoryId)
         {
             var product = new Product();
+
+            if (CategoryId.HasValue)
+            {
+                var subCategory = _subCategoriesRepository.List().FirstOrDefault(sc => sc.CategoryId == CategoryId);
+                if (subCategory != null)
+                {
+                    product.SubCategoryId = subCategory.Id;
+                }
+            }
+
             IncludeSubCategoriesListItems();
             return View(product);
         }
