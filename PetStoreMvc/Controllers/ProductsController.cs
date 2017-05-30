@@ -1,4 +1,5 @@
 ﻿using PetStoreMvc.Models;
+using PetStoreMvc.Models.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,58 +10,65 @@ namespace PetStoreMvc.Controllers
 {
     public class ProductsController : Controller
     {
+
+        private ProductsRepository _repository = new ProductsRepository();
+        private SubCategoriesRepository _subCategoriesRepository = new SubCategoriesRepository();
+
         // GET: Products
         public ActionResult Index()
         {
-            IEnumerable<Product> products;
-            using (var db = new ApplicationDbContext())
-            {
-                products = db.Products.Include(nameof(Product.SubCategory)).ToList();
-            }
-            return View(products);
+            return View(_repository.List());
         }
 
         public ActionResult Details(Guid id)
         {
-            using (var db = new ApplicationDbContext())
+            var product = _repository.Find(id);
+            if (product != null)
             {
-                IncludeSubCategoriesListItems(db);
-                return View(db.Products.Include(nameof(Product.SubCategory)).First(p => p.Id == id));
+
+                IncludeSubCategoriesListItems();
+                return View(product);
             }
+
+            return HttpNotFound();
         }
 
         public ActionResult Create()
         {
             var product = new Product();
-            using (var db = new ApplicationDbContext())
-            {
-                IncludeSubCategoriesListItems(db);
-            }
+            IncludeSubCategoriesListItems();
             return View(product);
         }
 
         public ActionResult Delete(Guid id)
         {
-            using (var db = new ApplicationDbContext())
+            var product = _repository.Find(id);
+            if (product != null)
             {
-                return View(db.Products.Include(nameof(Product.SubCategory)).First(p => p.Id == id));
+
+                IncludeSubCategoriesListItems();
+                return View(product);
             }
+
+            return HttpNotFound();
         }
 
         public ActionResult Edit(Guid id)
         {
-            using (var db = new ApplicationDbContext())
+            var product = _repository.Find(id);
+            if (product != null)
             {
-                IncludeSubCategoriesListItems(db);
-                return View(db.Products.Include(nameof(Product.SubCategory)).First(p => p.Id == id));
+
+                IncludeSubCategoriesListItems();
+                return View(product);
             }
+
+            return HttpNotFound();
         }
 
-        private void IncludeSubCategoriesListItems(ApplicationDbContext db)
+        private void IncludeSubCategoriesListItems()
         {
-            var groups = db.Categories.Select(c => new SelectListGroup { Name = c.Name }).ToList();
-
-            ViewData[nameof(Product.SubCategory)] = db.SubCategories.Select(sc => new SelectListItem
+            ViewData[nameof(Product.SubCategory)] = _subCategoriesRepository.List().Select(sc => new SelectListItem
             {
                 Text = sc.Category.Name + " => " + sc.Name,
                 Value = sc.Id.ToString()
