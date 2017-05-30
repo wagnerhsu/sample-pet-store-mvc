@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PetStoreMvc.Models.Repository
 {
-    public class ProductsRepository
+    public class ProductsRepository : IRepository<Product>
     {
         public ProductsRepository()
         {

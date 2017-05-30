@@ -16,9 +16,18 @@ namespace PetStoreMvc.Controllers
         private SubCategoriesRepository _subCategoriesRepository = new SubCategoriesRepository();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(Guid? CategoryId)
         {
-            return View(_repository.List());
+            IEnumerable<Product> list;
+            if (CategoryId.HasValue)
+            {
+                list = _repository.List().Where(p => p.SubCategory.CategoryId == CategoryId);
+            }
+            else
+            {
+                list = _repository.List();
+            }
+            return View(list);
         }
 
         public ActionResult Details(Guid? id)
