@@ -65,8 +65,30 @@ namespace PetStoreMvc.Migrations
                 CategoryId = catsCategory.Id
             };
 
+            var parrotAnimalSubCategory = new SubCategory
+            {
+                Id = new Guid("c309b357-7def-460d-bb24-997b815444a4"),
+                Name = "Animals",
+                CategoryId = parrotsCategory.Id
+            };
+
+            var dogAnimalSubCategory = new SubCategory
+            {
+                Id = new Guid("f0d3f341-df2f-419d-81ca-f6d72de6f1a8"),
+                Name = "Animals",
+                CategoryId = dogsCategory.Id
+            };
+
+            var catsAnimalSubCategory = new SubCategory
+            {
+                Id = new Guid("964793cb-0e5d-4485-b135-831ab22a14f1"),
+                Name = "Animals",
+                CategoryId = catsCategory.Id
+            };
+
             context.SubCategories.AddOrUpdate(sc => sc.Id,
-                kennelSubCat, dogFoodSubCategory, litterBoxSubCategory, catFoodSubCategory);
+                kennelSubCat, dogFoodSubCategory, litterBoxSubCategory, catFoodSubCategory,
+                parrotAnimalSubCategory, catsAnimalSubCategory, dogAnimalSubCategory);
 
             var catFishProduct = new Product
             {

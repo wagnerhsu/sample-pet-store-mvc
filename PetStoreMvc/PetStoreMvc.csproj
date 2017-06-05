@@ -205,6 +205,10 @@
     <Compile Include="Migrations\201705281534278_InitialProductsSubCategories.Designer.cs">
       <DependentUpon>201705281534278_InitialProductsSubCategories.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706051019202_ModelConstraints.cs" />
+    <Compile Include="Migrations\201706051019202_ModelConstraints.Designer.cs">
+      <DependentUpon>201706051019202_ModelConstraints.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -353,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705281534278_InitialProductsSubCategories.resx">
       <DependentUpon>201705281534278_InitialProductsSubCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706051019202_ModelConstraints.resx">
+      <DependentUpon>201706051019202_ModelConstraints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
