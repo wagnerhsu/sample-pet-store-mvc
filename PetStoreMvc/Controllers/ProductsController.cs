@@ -80,8 +80,6 @@ namespace PetStoreMvc.Controllers
             var product = id.HasValue ? _repository.Find(id.Value) : null;
             if (product != null)
             {
-
-                IncludeSubCategoriesListItems();
                 return View(product);
             }
 
@@ -108,7 +106,7 @@ namespace PetStoreMvc.Controllers
             var product = id.HasValue ? _repository.Find(id.Value) : null;
             if (product != null)
             {
-                IncludeSubCategoriesListItems();
+                IncludeSubCategoriesListItems(product.SubCategoryId);
                 return View(product);
             }
 
@@ -125,15 +123,17 @@ namespace PetStoreMvc.Controllers
                 return RedirectToAction(nameof(Details), new { id = product.Id });
             }
 
+            IncludeSubCategoriesListItems(product.SubCategoryId);
             return View(product);
         }
 
-        private void IncludeSubCategoriesListItems()
+        private void IncludeSubCategoriesListItems(Guid? selectedId = null)
         {
             ViewData[nameof(Product.SubCategoryId)] = _subCategoriesRepository.List().Select(sc => new SelectListItem
             {
                 Text = sc.Category.Name + " => " + sc.Name,
-                Value = sc.Id.ToString()
+                Value = sc.Id.ToString(),
+                Selected = selectedId == sc.CategoryId
             }).ToList();
         }
     }
