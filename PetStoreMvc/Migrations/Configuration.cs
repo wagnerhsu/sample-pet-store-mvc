@@ -1,5 +1,7 @@
 namespace PetStoreMvc.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using PetStoreMvc.Models;
     using System;
     using System.Data.Entity;
@@ -110,6 +112,26 @@ namespace PetStoreMvc.Migrations
 
             context.Products.AddOrUpdate(p => p.Id,
                 catFishProduct, dogSausageProduct);
+
+
+            if (!context.Roles.Any(r => r.Name == ApplicationUser.RoleAdministrator))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = ApplicationUser.RoleAdministrator };
+
+                manager.Create(role);
+            }
+
+            if (!context.Users.Any(u => u.UserName == "admin"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { UserName = "admin", Email = "admin@localhost.local" };
+
+                manager.Create(user, "Password1!");
+                manager.AddToRole(user.Id, ApplicationUser.RoleAdministrator);
+            }
         }
     }
 }
